@@ -71,6 +71,7 @@ app.controller("UserController", function ($scope, $http) {
 app.controller("PostsController", function ($scope, $http) {
     $scope.posts = [];
     $scope.data = {
+        post_id : -1,
         title: "",
         description: ""
     };
@@ -90,6 +91,35 @@ app.controller("PostsController", function ($scope, $http) {
             console.log(response.statusText)
 
         })
+    }
+    
+    $scope.submit_post = function () {
+        var method = "POST";
+        var url = "http://localhost:8000/posts/";
+
+        var params = JSON.stringify({user: document.cookie, title: $scope.data.title, description: $scope.data.description});
+
+        $http({
+            method: method,
+            url: url,
+            data: params,
+            headers: {'Content-Type':'application/json'}
+        }).then(_refreshPosts())
+        
+    };
+
+    $scope.submit_like = function () {
+        var method = "POST";
+        var url = "http://localhost:8000/likes/" + $scope.data.post_id;
+
+        var params = JSON.stringify({token: document.cookie});
+
+        $http({
+            method: method,
+            url: url,
+            data: params,
+            headers: {'Content-Type':'application/json'}
+        }).then(_refreshPosts())
     }
 
 });

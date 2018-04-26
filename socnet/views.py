@@ -33,7 +33,10 @@ class UserHandler(APIView):
 
 class PostHandler(APIView):
     def post(self, request, format='json'):
+        user_id = Token.objects.filter(key=request.data['token'])[0].user_id
+        request.data['user'] = user_id
         serializer = PostSerializer(data=request.data)
+
         if serializer.is_valid():
             post = serializer.save()
             return Response(post, status=status.HTTP_201_CREATED)
