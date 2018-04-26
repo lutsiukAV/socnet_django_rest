@@ -14,11 +14,11 @@
     <script type="text/javascript" src="js/app.js"></script>
 </head>
 <body ng-app="SocModule">
+
 <div ng-view>
     <div ng-controller="UserController">
-        <form ng-submit="sign_up()">
+        <form ng-submit="sign_in()">
             <input type="text" placeholder="username" ng-model="data.username"/>
-            <input type="email" placeholder="email" ng-model="data.email"/>
             <input type="password" placeholder="password" ng-model="data.password"/>
             <input type="submit" value="OK">
         </form>
@@ -26,4 +26,3 @@
 </div>
 
 </body>
-</html>

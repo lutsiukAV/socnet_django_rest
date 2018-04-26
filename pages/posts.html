@@ -15,15 +15,30 @@
 </head>
 <body ng-app="SocModule">
 <div ng-view>
-    <div ng-controller="UserController">
-        <form ng-submit="sign_up()">
-            <input type="text" placeholder="username" ng-model="data.username"/>
-            <input type="email" placeholder="email" ng-model="data.email"/>
-            <input type="password" placeholder="password" ng-model="data.password"/>
-            <input type="submit" value="OK">
-        </form>
-    </div>
-</div>
 
+    <div ng-controller="PostsController">
+        <form ng-submit="submit_post()">
+            <input type="text" placeholder="title" ng-model="data.title"/>
+            <input type="text" placeholder="description" ng-model="data.description"/>
+            <input type="submit" value="OK"/>
+        </form>
+
+        <div>
+            <ul> All posts
+
+                <li ng-repeat="p in posts">
+                    <p>{{ p.title }}</p>
+                    <p>{{ p.description }}</p>
+                    <form ng-submit="submit_like()">
+                        <input type="number" ng-model = "data.post_id" value="{{ p.id }}" style="visibility: hidden"/>
+                        <input type="submit" value="Like"/>
+                    </form>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+
+
+</div>
 </body>
-</html>
