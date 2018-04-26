@@ -4,7 +4,7 @@ from rest_framework.authtoken.models import Token
 from serializers import *
 from rest_framework import generics, status
 from rest_framework.response import *
-
+from pyhunter import PyHunter
 
 # Create your views here.
 
@@ -16,15 +16,22 @@ class PostDetail(generics.RetrieveAPIView):
 class UserHandler(APIView):
 
     def post(self, request, format='json'):
-        serializer = UserSerializer(data=request.data)
-        if serializer.is_valid():
-            user = serializer.save()
-            if user:
-                token = Token.objects.create(user=user)
-                json = serializer.data
-                json['token'] = token.key
-                return Response(json, status=status.HTTP_201_CREATED)
-        return Response(status=status.HTTP_400_BAD_REQUEST)
+        hunter = PyHunter('3aa8ffb04c54f0b05a053423314192b0fa7cfa62')
+        info = hunter.email_verifier(request.data['email'])
+        if info['webmail']:
+            serializer = UserSerializer(data=request.data)
+            if serializer.is_valid():
+                user = serializer.save()
+                if user:
+                    token = Token.objects.create(user=user)
+                    json = serializer.data
+                    json['token'] = token.key
+                    return Response(json, status=status.HTTP_201_CREATED)
+            else:
+                Response(status=status.HTTP_400_BAD_REQUEST)
+        else:
+            message = "Email does not exist!"
+            return Response(data=message, status=status.HTTP_406_NOT_ACCEPTABLE)
 
     def get(self, request, format='json'):
         users = User.objects.all()
