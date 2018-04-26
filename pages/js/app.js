@@ -61,7 +61,7 @@ app.controller("UserController", function ($scope, $http) {
         window.location.replace("http://localhost:8000/posts")
     }
 
-    function _error(repsonse) {
+    function _error(response) {
         console.log(response.statusText)
 
     }
