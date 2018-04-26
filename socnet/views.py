@@ -33,8 +33,9 @@ class UserHandler(APIView):
 
 class PostHandler(APIView):
     def post(self, request, format='json'):
-        user_id = Token.objects.filter(key=request.data['token'])[0].user_id
-        request.data['user'] = user_id
+        if type(request.data['user']) is str: #token is sent from angular client
+            user_id = Token.objects.filter(key=request.data['user'])[0].user_id
+            request.data['user'] = user_id
         serializer = PostSerializer(data=request.data)
 
         if serializer.is_valid():
